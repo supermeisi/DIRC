@@ -30,8 +30,15 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
     G4VPhysicalVolume *physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0, checkOverlaps);
 
     G4Box *solidRad = new G4Box("solidRad", 0.5 * xRad, 0.5 * yRad, 0.5 * zRad);
-    G4LogicalVolume *logicRad = new G4LogicalVolume(solidRad, SiO2, "logicRad");
+    logicRad = new G4LogicalVolume(solidRad, SiO2, "logicRad");
     G4VPhysicalVolume *physRad = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicRad, "physRad", logicWorld, false, 0, checkOverlaps);
 
     return physWorld;
+}
+
+void PMDetectorConstruction::ConstructSDandField()
+{
+    PMSensitiveDetector *sensDet = new PMSensitiveDetector("SensitveDetector");
+    logicRad->SetSensitiveDetector(sensDet);
+    G4SDManager::GetSDMpointer()->AddNewDetector(sensDet);
 }

@@ -14,13 +14,19 @@
 #include "G4SystemOfUnits.hh"
 #include "G4UnitsTable.hh"
 
+#include "PMSensitiveDetector.hh"
+#include "G4SDManager.hh"
+
 class PMDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
     PMDetectorConstruction();
     virtual ~PMDetectorConstruction();
 
+    G4LogicalVolume *logicRad;
+
     virtual G4VPhysicalVolume *Construct();
+    virtual void ConstructSDandField();
 };
 
 #endif

@@ -7,7 +7,7 @@ PMPrimaryGenerator::PMPrimaryGenerator()
     // Particle position
     G4double x = 0. * m;
     G4double y = 0. * m;
-    G4double z = 0. * m;
+    G4double z = -0.25 * m;
 
     G4ThreeVector pos(x, y, z);
 
@@ -20,11 +20,11 @@ PMPrimaryGenerator::PMPrimaryGenerator()
 
     // Particle type
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-    G4ParticleDefinition *particle = particleTable->FindParticle("e+");
+    G4ParticleDefinition *particle = particleTable->FindParticle("pi+");
 
     fParticleGun->SetParticlePosition(pos);
     fParticleGun->SetParticleMomentumDirection(mom);
-    fParticleGun->SetParticleEnergy(1. * GeV);
+    fParticleGun->SetParticleEnergy(0.5 * GeV);
     fParticleGun->SetParticleDefinition(particle);
 }
 

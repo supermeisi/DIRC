@@ -29,9 +29,10 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
     G4double photonEnergy[NUMENTRIES];
     G4double refractiveIndex[NUMENTRIES];
     G4double refractiveIndexWorld[NUMENTRIES];
+    G4double reflectivity[NUMENTRIES];
 
     // Photon energy range: 200 nm (6.2 eV) to 900 nm (1.38 eV)
-    G4double lambdaMin = 0.2; // microns
+    G4double lambdaMin = 0.8; // microns
     G4double lambdaMax = 0.9; // microns
 
     for (int i = 0; i < NUMENTRIES; i++)
@@ -40,7 +41,7 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
         G4double lambda = lambdaMin + (lambdaMax - lambdaMin) * (NUMENTRIES - i) / (NUMENTRIES - 1);
 
         // Convert wavelength to energy
-        G4double energy = (1.2498 / lambda); // E[eV] = 1240 / λ[nm]
+        G4double energy = (1.2498 / lambda) * eV; // E[eV] = 1240 / λ[nm]
         photonEnergy[i] = energy;
 
         G4cout << energy << G4endl;
@@ -58,17 +59,25 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
         G4double n2 = 1 + (B1 * lambda2) / (lambda2 - C1) + (B2 * lambda2) / (lambda2 - C2) + (B3 * lambda2) / (lambda2 - C3);
         refractiveIndex[i] = std::sqrt(n2);
         refractiveIndexWorld[i] = 1.0;
+
+        reflectivity[i] = 0.;
     }
 
     // Add to material properties tables
     G4MaterialPropertiesTable *mptWorld = new G4MaterialPropertiesTable();
     G4MaterialPropertiesTable *mptSiO2 = new G4MaterialPropertiesTable();
+    G4MaterialPropertiesTable *mptAbsorber = new G4MaterialPropertiesTable();
+
+    G4OpticalSurface *absorberSurface = new G4OpticalSurface("lg_absorber");
 
     mptWorld->AddProperty("RINDEX", photonEnergy, refractiveIndexWorld, NUMENTRIES);
     mptSiO2->AddProperty("RINDEX", photonEnergy, refractiveIndex, NUMENTRIES);
+    mptAbsorber->AddProperty("REFLECTIVITY", photonEnergy, reflectivity, NUMENTRIES);
 
     worldMat->SetMaterialPropertiesTable(mptWorld);
     SiO2->SetMaterialPropertiesTable(mptSiO2);
+
+    absorberSurface->SetMaterialPropertiesTable(mptAbsorber);
 
     G4Box *solidWorld = new G4Box("solidWorld", 0.5 * xWorld, 0.5 * yWorld, 0.5 * zWorld);
     G4LogicalVolume *logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
@@ -77,6 +86,10 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
     G4Box *solidRad = new G4Box("solidRad", 0.5 * xRad, 0.5 * yRad, 0.5 * zRad);
     logicRad = new G4LogicalVolume(solidRad, SiO2, "logicRad");
     G4VPhysicalVolume *physRad = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicRad, "physRad", logicWorld, false, 0, checkOverlaps);
+
+    // Mirror surface
+    G4LogicalBorderSurface *surfaceAbsorber = new G4LogicalBorderSurface("MirrorSurface", physRad, physWorld, absorberSurface);
+    G4LogicalBorderSurface *surfaceAbsorber2 = new G4LogicalBorderSurface("MirrorSurface2", physWorld, physRad, absorberSurface);
 
     return physWorld;
 }

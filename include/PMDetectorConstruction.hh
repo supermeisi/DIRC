@@ -9,12 +9,14 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4Material.hh"
+#include "G4OpticalSurface.hh"
 
 #include "G4NistManager.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4UnitsTable.hh"
 
 #include "PMSensitiveDetector.hh"
+#include "G4LogicalBorderSurface.hh"
 #include "G4SDManager.hh"
 
 class PMDetectorConstruction : public G4VUserDetectorConstruction

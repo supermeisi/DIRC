@@ -31,10 +31,6 @@ G4bool PMSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     {
         G4ThreeVector pos = postStepPoint->GetPosition();
         G4ThreeVector mom = postStepPoint->GetMomentumDirection();
-
-        G4cout << pos << G4endl;
-
-        analysisManager->FillH1(0, mom.theta());
     }
 
     return true;

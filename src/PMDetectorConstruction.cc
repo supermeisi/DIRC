@@ -18,7 +18,7 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
 
     G4double xRad = 0.5 * m;
     G4double yRad = 0.5 * m;
-    G4double zRad = 0.02 * m;
+    G4double zRad = 0.04 * m;
 
     // Defining materials
     G4NistManager *nist = G4NistManager::Instance();
@@ -32,7 +32,7 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
     G4double reflectivity[NUMENTRIES];
 
     // Photon energy range: 200 nm (6.2 eV) to 900 nm (1.38 eV)
-    G4double lambdaMin = 0.8; // microns
+    G4double lambdaMin = 0.89; // microns
     G4double lambdaMax = 0.9; // microns
 
     for (int i = 0; i < NUMENTRIES; i++)

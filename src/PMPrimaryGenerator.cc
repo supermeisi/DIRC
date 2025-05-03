@@ -7,7 +7,7 @@ PMPrimaryGenerator::PMPrimaryGenerator()
     // Particle position
     G4double x = 0. * m;
     G4double y = 0. * m;
-    G4double z = -0.01 * m;
+    G4double z = -0.02 * m;
 
     G4ThreeVector pos(x, y, z);
 

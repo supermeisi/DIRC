@@ -19,4 +19,10 @@ void PMActionInitialization::Build() const
 
     PMRunAction *runAction = new PMRunAction();
     SetUserAction(runAction);
+
+    PMEventAction *eventAction = new PMEventAction(runAction);
+    SetUserAction(eventAction);
+
+    PMSteppingAction *steppingAction = new PMSteppingAction(eventAction);
+    SetUserAction(steppingAction);
 }

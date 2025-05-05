@@ -18,7 +18,7 @@ G4VPhysicalVolume *PMDetectorConstruction::Construct()
 
     G4double xRad = 0.5 * m;
     G4double yRad = 0.5 * m;
-    G4double zRad = 0.04 * m;
+    G4double zRad = 0.02 * m;
 
     // Defining materials
     G4NistManager *nist = G4NistManager::Instance();

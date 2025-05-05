@@ -5,7 +5,7 @@ PMRunAction::PMRunAction()
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
 
     analysisManager->CreateH1("Angle", "Polar Angle", 1000, 0.6, 1.0);
-    analysisManager->CreateH1("Angle", "Polar Angle", 100, -0.1, 0.1);
+    analysisManager->CreateH1("Angle", "Polar Angle", 1000, -1.0, 1.0);
 }
 
 PMRunAction::~PMRunAction()

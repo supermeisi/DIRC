@@ -20,7 +20,7 @@ void PMSteppingAction::UserSteppingAction(const G4Step *step)
     G4double thetaDeg = theta * 180.0 / CLHEP::pi;
     G4double phiDeg = phi * 180.0 / CLHEP::pi;
 
-    if (theta == 0)
+    if (theta == 0.)
         return;
 
     if (track->GetTrackID() == 1)

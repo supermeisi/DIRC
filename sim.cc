@@ -11,15 +11,15 @@
 #include "PMDetectorConstruction.hh"
 #include "PMActionInitialization.hh"
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    G4UIExecutive *ui = new G4UIExecutive(argc, argv);
+    G4UIExecutive *ui;
 
-    #ifdef G4MULTITHREADED
-        G4MTRunManager *runManager = new G4MTRunManager;
-    #else
-        G4RunManager *runManger = new G4RunManager;
-    #endif
+#ifdef G4MULTITHREADED
+    G4MTRunManager *runManager = new G4MTRunManager;
+#else
+    G4RunManager *runManger = new G4RunManager;
+#endif
 
     // Physics list
     runManager->SetUserInitialization(new PMPhysicsList());
@@ -30,14 +30,32 @@ int main(int argc, char** argv)
     // Action initialization
     runManager->SetUserInitialization(new PMActionInitialization());
 
-    G4VisManager *visManager = new G4VisExecutive();
-    visManager->Initialize();
+    if (argc == 1)
+    {
+        ui = new G4UIExecutive(argc, argv);
+    }
 
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
 
+    G4VisManager *visManager = new G4VisExecutive();
+    visManager->Initialize();
+
     UImanager->ApplyCommand("/control/execute vis.mac");
 
-    ui->SessionStart();
+    if (ui)
+    {
+        UImanager->ApplyCommand("/control/execute vis.mac");
+        ui->SessionStart();
+    }
+    else
+    {
+        G4String command = "/control/execute ";
+        G4String fileName = argv[1];
+        UImanager->ApplyCommand(command + fileName);
+    }
+    
+    delete visManager;
+    delete runManager;
 
     return 0;
 }
